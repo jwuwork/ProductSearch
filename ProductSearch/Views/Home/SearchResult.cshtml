@@ -1,0 +1,33 @@
+﻿@model ProductSearch.ViewModels.Home.SearchResult
+
+@{
+    ViewBag.Title = "Search Result";
+}
+
+@using (Html.BeginForm("Search", "Home", FormMethod.Get))
+{
+    <input type="text" name="q" value="@Request.QueryString["q"]" autofocus />
+    <input type="submit" value="Search" />
+}
+
+<table class="table">
+    @foreach (var product in Model.Products)
+    {
+        <tr>
+            <td>
+                @product.Name
+            </td>
+        </tr>
+    }
+</table>
+
+<ul class="pagination">
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        string active = i == Model.CurrentPage ? "class=\"active\"" : "";
+
+        <li @active>
+            @Html.ActionLink(i.ToString(), "Search", "Search", new { page = i, q = @Request.QueryString["q"] }, null)
+        </li>
+    }
+</ul>
